@@ -1,32 +1,36 @@
-#include <winsock2.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#ifndef HTTP_TCP_SERVER
-#define HTTP_TCP_SERVER
+#ifndef HTTP_TCP_SERVER_H
+#define HTTP_TCP_SERVER_H
 
-namespace http{
-class TcpServer{
-    public:
-    TcpServer(std::string IP_Adress,int port);
+#include <winsock2.h>
+#include <string>
+
+namespace http {
+
+class TcpServer {
+public:
+    TcpServer(std::string ip_address, int port);
     ~TcpServer();
-    private:
+    void run();
+
+private:
     std::string m_ip_address;
     int m_port;
-    SOCKET m_socket; //Server socket,Over here in shit windows we use SOCKET cause it is considered a separate API i.e winsock 
-    SOCKET m_new_socket; //Client socket
+    SOCKET m_socket;
+    SOCKET m_new_socket;
     long m_incomingmessage;
-    struct sockaddr_in m_socketAdress; //As it is a C header we use struct(kind),sockaddr_in(type)
+    struct sockaddr_in m_socketAdress;
     int m_socketadress_len;
     std::string m_serverMessage;
-    std::string buildResponse = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Hello from Servy!</h1></body></html>";
     WSADATA m_wsaData;
 
     int start_server();
     void close_server();
     int listening();
-    int acceptConnections();
-
+    int acceptConnections(SOCKET &new_socket);
+    std::string buildResponse();
+    void handleConnection(SOCKET client_socket);
 };
-}
+
+} // namespace http
+
 #endif
