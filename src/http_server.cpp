@@ -101,10 +101,24 @@ namespace http
 
     std::string TcpServer::buildResponse() {
         std::string htmlContent =
+            "<!DOCTYPE html>"
             "<html>"
-            "<head><title>Servy</title></head>"
-            "<body><h1>Hello from Servy!</h1></body>"
+            "<head>"
+                "<title>Servy - Simple Button Click</title>"
+            "</head>"
+            "<body>"
+                "<h1>Hello from Servy!</h1>"
+                "<!-- The button element with an inline onclick event -->"
+                "<button type=\"button\" onclick=\"showAlert()\">Click Me!</button>"
+                "<!-- JavaScript to define the action -->"
+                "<script>"
+                    "function showAlert() {"
+                        "alert('Button was clicked!');"
+                    "}"
+                "</script>"
+            "</body>"
             "</html>";
+
 
         std::ostringstream ss;
         ss << "HTTP/1.1 200 OK\r\n"
